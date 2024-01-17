@@ -4,17 +4,17 @@ SRC_DIR = src
 BUILD_DIR = build
 
 .PHONY: all
-all: build $(BUILD_DIR)/main_floppy.img $(BUILD_DIR)/main.bin
+all: build $(BUILD_DIR)/boot_floppy.img $(BUILD_DIR)/boot.bin
 
 build:
 	mkdir build
 
-$(BUILD_DIR)/main_floppy.img: $(BUILD_DIR)/main.bin
-	cp $(BUILD_DIR)/main.bin $(BUILD_DIR)/main_floppy.img
-	truncate -s 1440k $(BUILD_DIR)/main_floppy.img
+$(BUILD_DIR)/boot_floppy.img: $(BUILD_DIR)/boot.bin
+	cp $(BUILD_DIR)/boot.bin $(BUILD_DIR)/boot_floppy.img
+	truncate -s 1440k $(BUILD_DIR)/boot_floppy.img
 
-$(BUILD_DIR)/main.bin: $(SRC_DIR)/main.asm
-	$(ASM) -o $(BUILD_DIR)/main.bin $(SRC_DIR)/main.asm -f bin
+$(BUILD_DIR)/boot.bin: $(SRC_DIR)/boot.asm
+	$(ASM) -o $(BUILD_DIR)/boot.bin $(SRC_DIR)/boot.asm -f bin
 
 .PHONY: clean
 clean:
@@ -22,5 +22,5 @@ clean:
 
 .PHONY: run
 run:
-	qemu-system-i386 -fda build/main_floppy.img
+	qemu-system-i386 -fda build/boot_floppy.img
 
